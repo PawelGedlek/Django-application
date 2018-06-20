@@ -1,0 +1,54 @@
+{% extends 'films/film/base.html' %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }} {% else %} Filmy{% endif %}
+{% endblock %}
+<h2>All films</h2>
+{% block content %}
+   <div class="container-fluid">
+      <div class="row" style="margin-top: 6%">
+
+        <div class="col-sm-8 blog-main">
+
+
+              <div class="row">
+                  <div class="col-md-12">
+                  <h4>Wybrane filmy</h4>
+                  </div>
+                  {% for movie in movies %}
+
+                      <div class="col-md-4">
+                        <div class="thumbnail movie-item">
+                            <a href="{{ movie.get_absolute_url }}">
+                                <img class="list-img" src="{% if movie.image %} {{ movie.image.url }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="...">
+                            </a>
+                            <div class="caption">
+                                <h3 class="text-center">
+                                    <a href="{{ movie.get_absolute_url }}">{{ movie.name }}</a>
+                                </h3>
+
+                            </div>
+                        </div>
+                      </div>
+                  {% endfor %}
+              </div>
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module">
+            <h4>Wybierz ulubioną kategorie</h4>
+            <ol class="list-unstyled">
+              <li {% if not category %} class="active"{% endif %}><a href="{% url 'films:film_list' %}">Wszystkie</a></li>
+            {% for c in categories %}
+
+              <li {% if category.slug == c.slug %} class="active"{% endif %}>
+                  <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+              </li>
+            {% endfor %}
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+    </div><!-- /.container -->
+{% endblock %}

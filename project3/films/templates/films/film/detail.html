@@ -1,0 +1,73 @@
+{% extends 'films/film/base.html' %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }} {% else %} Filmy {% endif %}
+{% endblock %}
+
+{% block content %}
+   <div class="container">
+      <div class="row" style="margin-top: 6%">
+
+          <div class="blog-post">
+              <div class="row">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <h2>{{ movie.name }}</h2>
+                            </div>
+                            <div class="col-md-6">
+                                <img class="img-fluid" src="{% if movie.image %} {{ movie.image.url }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." >
+                            </div>
+                            <div class="col-md-6">
+
+                                <h4>Informacje o filmie:</h4>
+                                <p>Kategoria: <a href="{{ movie.category.get_absolute_url }}">{{ movie.category }}</a></p>
+                                <p>Reżyseria: {{ movie.film_director }}</p>
+                                <p>Produkcja: {{ movie.country_production }}</p>
+                                <p>Rok: {{ movie.year }}</p>
+
+                            </div>
+                        <div class="col-md-12">
+                            <br>
+                            <h4>Opis filmu:</h4>
+                            <p>{{ movie.description|safe|linebreaksbr }}</p>
+                        </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h3>Zobacz trailer</h3>
+
+                                <iframe width="100%" height="315" src="{% if movie.trailer %} {{ movie.trailer }} {% else %} { 'https://www.youtube.com/embed/omRU57zhelc' } {% endif %}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        </div>
+
+                    </div>
+                </div>
+              </div>
+
+
+          </div><!-- /.blog-post -->
+
+
+      </div><!-- /.row -->
+       <div class="container theme-showcase" role="main">
+
+      <div class="">
+        <h1>Komentarze użytkowników:</h1>
+        <a type="button" class="btn btn-link" href="{% url 'films:sign' %}">Napisz komentarz</a>
+        {% for comment in films.comments.all %}
+          <div class="page-header">
+            <h1>{{ c.name }}</h1>
+          </div>
+          <div class="">
+            <p>{{ c.comment }}</p>
+          </div>
+          {% empty %}
+            <p>Brak komentarzy, bądź pierwszą osobą, która wyrazi swoją opinię</p>
+        {% endfor%}
+      </div>
+
+
+    </div> <!-- /container -->
+    </div><!-- /.container -->
+{% endblock %}
